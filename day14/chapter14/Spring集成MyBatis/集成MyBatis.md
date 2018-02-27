@@ -1,0 +1,88 @@
+# 集成 MyBatis
+
+---
+
+## 创建 MyBatis 配置文件
+
+在 `src/main/resources` 目录下创建 `mybatis-config.xml` 文件
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 全局参数 -->
+    <settings>
+        <!-- 使全局的映射器启用或禁用缓存。 -->
+        <setting name="cacheEnabled" value="false"/>
+
+        <!-- 全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+
+        <!-- 当启用时，有延迟加载属性的对象在被调用时将会完全加载任意属性。否则，每种属性将会按需要加载。 -->
+        <setting name="aggressiveLazyLoading" value="true"/>
+
+        <!-- 是否允许单条sql 返回多个数据集  (取决于驱动的兼容性) default:true -->
+        <setting name="multipleResultSetsEnabled" value="true"/>
+
+        <!-- 是否可以使用列的别名 (取决于驱动的兼容性) default:true -->
+        <setting name="useColumnLabel" value="true"/>
+
+        <!-- 允许JDBC 生成主键。需要驱动器支持。如果设为了true，这个设置将强制使用被生成的主键，有一些驱动器不兼容不过仍然可以执行。  default:false  -->
+        <setting name="useGeneratedKeys" value="false"/>
+
+        <!-- 指定 MyBatis 如何自动映射 数据基表的列 NONE：不隐射　PARTIAL:部分  FULL:全部  -->
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+
+        <!-- 这是默认的执行类型  （SIMPLE: 简单； REUSE: 执行器可能重复使用prepared statements语句；BATCH: 执行器可以重复执行语句和批量更新）  -->
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+
+        <!-- 使用驼峰命名法转换字段。 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!-- 设置本地缓存范围 session:就会有数据的共享  statement:语句范围 (这样就不会有数据的共享 ) defalut:session -->
+        <setting name="localCacheScope" value="SESSION"/>
+
+        <!-- 设置但JDBC类型为空时,某些驱动程序 要指定值,default:OTHER，插入空值时不需要指定类型 -->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+</configuration>
+```
+
+## 创建 Spring MyBatis 配置文件
+
+在 `src/main/resources` 目录下创建 `spring-context-mybatis.xml` 文件
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 配置 SqlSession -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="com.lusifer.myshop"/>
+        <property name="mapperLocations" value="classpath:/mapper/**/*.xml"/>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+    </bean>
+
+    <!-- 扫描 mapper -->
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.lusifer.myshop.module.**.mapper" />
+    </bean>
+
+    <!-- 定义事务 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 配置 Annotation 驱动，扫描 @Transactional 注解的类定义事务  -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+</beans>
+```
+
+## 导入 Spring 配置文件
+
+```
+<import resource="classpath:spring-context-mybatis.xml" />
+```
