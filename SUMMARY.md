@@ -1,5 +1,7 @@
 # Summary
+
 ## 三阶段
+* [Introduction](README.md)
 * [第02天-Maven 基础](day02/chapter02.md)
     * [Maven 简介](day02/chapter02/maven-jian-jie.md)
     * [Maven 安装配置](day02/chapter02/maven-install.md)
@@ -388,3 +390,4 @@
         * [数据结构分析-配置相关](附录/趣头条分析/数据结构分析-配置相关.md)
         * [数据结构分析-头条模块](附录/趣头条分析/数据结构分析-头条模块.md)
         * [数据库设计](附录/趣头条分析/数据库设计.md)
+
