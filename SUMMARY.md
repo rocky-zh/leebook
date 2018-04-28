@@ -1,6 +1,6 @@
 # Summary
 
-## 三阶段
+## 篇章三
 * [Introduction](README.md)
 * [2-Maven 基础](day02/chapter02.md)
     * [Maven 简介](day02/chapter02/maven-jian-jie.md)
@@ -183,7 +183,7 @@
     * [硬编码方式完成授权](day22/chapter22/硬编码方式完成授权.md)
     * [使用 Shiro 的 JSTL 标签](day22/chapter22/使用Shiro的JSTL标签.md)
 
-## 四阶段
+## 篇章四(来自book 微服务)
 * [第01章 微服务简介](chapter1.md)
     * [构建单体应用模型](chapter1/构建单体应用模型.md)
     * [走向单体地狱](chapter1/走向单体地狱.md)
